@@ -27,12 +27,14 @@ module Webpush
       req.body = body
       resp = http.request(req)
 
-      if resp.is_a?(Net::HTTPGone) ||   #Firefox unsubscribed response
-          (resp.is_a?(Net::HTTPBadRequest) && resp.message == "UnauthorizedRegistration")  #Chrome unsubscribed response
-        raise InvalidSubscription.new(resp.inspect)
-      elsif !resp.is_a?(Net::HTTPSuccess)  #unknown/unhandled response error
-        raise ResponseError.new "host: #{uri.host}, #{resp.inspect}\nbody:\n#{resp.body}"
-      end
+
+      ## We will handle response on our side
+      # if resp.is_a?(Net::HTTPGone) ||   #Firefox unsubscribed response
+      #     (resp.is_a?(Net::HTTPBadRequest) && resp.message == "UnauthorizedRegistration")  #Chrome unsubscribed response
+      #   raise InvalidSubscription.new(resp.inspect)
+      # elsif !resp.is_a?(Net::HTTPSuccess)  #unknown/unhandled response error
+      #   raise ResponseError.new "host: #{uri.host}, #{resp.inspect}\nbody:\n#{resp.body}"
+      # end
 
       resp
     end
